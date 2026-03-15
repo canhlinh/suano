@@ -14,14 +14,14 @@ enum AIProvider: String, CaseIterable, Codable, Sendable {
 
     var defaultBaseURL: String {
         switch self {
-        case .openAI: return "https://api.openai.com/v1"
+        case .openAI: return "https://api.groq.com/openai/v1"
         case .ollama: return "http://localhost:11434/v1"
         }
     }
 
     var defaultModel: String {
         switch self {
-        case .openAI: return "gpt-4o-mini"
+        case .openAI: return "meta-llama/llama-4-scout-17b-16e-instruct"
         case .ollama: return "gemma3:12b"
         }
     }
@@ -131,7 +131,7 @@ actor AIService {
         let provider = UserDefaults.standard.aiProvider
         let baseURL  = UserDefaults.standard.aiBaseURL
         let model    = UserDefaults.standard.aiModel
-        let apiKey   = UserDefaults.standard.openAIApiKey
+        let apiKey   = UserDefaults.standard.openAIApiKey.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if provider.requiresAPIKey && apiKey.isEmpty {
             onComplete(AIError.missingAPIKey)
@@ -150,6 +150,7 @@ actor AIService {
         if !apiKey.isEmpty {
             request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         }
+        request.setValue("AIHelper/1.0", forHTTPHeaderField: "User-Agent")
 
         let body: [String: Any] = [
             "model": model,
@@ -165,16 +166,46 @@ actor AIService {
             do {
                 let (asyncBytes, response) = try await URLSession.shared.bytes(for: request)
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                    onComplete(AIError.httpError(httpResponse.statusCode))
+                    var detail = "HTTP \(httpResponse.statusCode)"
+                    var bodyData = Data()
+                    for try await byte in asyncBytes {
+                        bodyData.append(byte)
+                        if bodyData.count > 10000 { break }
+                    }
+                    if let json = try? JSONSerialization.jsonObject(with: bodyData) as? [String: Any],
+                       let errorObj = json["error"] as? [String: Any],
+                       let message = errorObj["message"] as? String {
+                        detail = message
+                    } else if let str = String(data: bodyData, encoding: .utf8), !str.isEmpty {
+                        detail = str.trimmingCharacters(in: .whitespacesAndNewlines)
+                    }
+                    onComplete(AIError.apiError(detail))
                     return
                 }
                 for try await line in asyncBytes.lines {
-                    guard line.hasPrefix("data: ") else { continue }
+                    guard line.hasPrefix("data: ") else {
+                        // Some providers might return an error object as the first line if not data:
+                        if let jsonData = line.data(using: .utf8),
+                           let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+                           let errorObj = json["error"] as? [String: Any],
+                           let message = errorObj["message"] as? String {
+                            onComplete(AIError.apiError(message))
+                            return
+                        }
+                        continue
+                    }
                     let data = String(line.dropFirst(6))
                     if data == "[DONE]" { break }
                     guard let jsonData = data.data(using: .utf8),
-                          let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
-                          let choices = json["choices"] as? [[String: Any]],
+                          let json = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else { continue }
+
+                    if let errorObj = json["error"] as? [String: Any],
+                       let message = errorObj["message"] as? String {
+                        onComplete(AIError.apiError(message))
+                        return
+                    }
+
+                    guard let choices = json["choices"] as? [[String: Any]],
                           let delta = choices.first?["delta"] as? [String: Any],
                           let content = delta["content"] as? String else { continue }
                     await MainActor.run { onToken(content) }
@@ -193,15 +224,18 @@ enum AIError: LocalizedError {
     case missingAPIKey
     case httpError(Int)
     case badURL
+    case apiError(String)
 
     var errorDescription: String? {
         switch self {
         case .missingAPIKey:
-            return "No OpenAI API key set. Open Settings (⌘,) to add one."
+            return "No API key set. Open Settings (⌘,) to add one."
         case .httpError(let code):
             return "Server returned HTTP \(code). Check your model and API key."
         case .badURL:
             return "Invalid base URL. Check your settings."
+        case .apiError(let message):
+            return "API Error: \(message)"
         }
     }
 }
