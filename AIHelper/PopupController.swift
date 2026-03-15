@@ -51,11 +51,9 @@ class PopupController: NSObject, NSWindowDelegate {
     }
 
     private func showPopup(text: String) {
-        // Output removed for production"[PopupController] showPopup() called, text length=\(text.count)")
         dismissPopup()
 
         let sourceApp = NSWorkspace.shared.frontmostApplication
-        let mouseLocation = NSEvent.mouseLocation
 
         let newPanel = KeyablePanel(
             contentRect: NSRect(x: 0, y: 0, width: popupWidth, height: 100),
@@ -86,13 +84,13 @@ class PopupController: NSObject, NSWindowDelegate {
         hosting.sizingOptions = .preferredContentSize
         newPanel.contentView = hosting
 
-        // Compute anchor: top-left corner stays fixed as height grows
-        var anchor = NSPoint(x: mouseLocation.x + 8, y: mouseLocation.y - 8)
-        if let screen = NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) }) ?? NSScreen.main {
-            anchor.x = max(screen.visibleFrame.minX + 8, min(anchor.x, screen.visibleFrame.maxX - popupWidth - 8))
-            anchor.y = min(anchor.y, screen.visibleFrame.maxY - 8)
-        }
-        topLeft = anchor
+        // Position at top-center of the main screen
+        let screen = NSScreen.main ?? NSScreen.screens.first ?? NSScreen.main!
+        let visibleFrame = screen.visibleFrame
+        topLeft = NSPoint(
+            x: visibleFrame.minX + (visibleFrame.width - popupWidth) / 2,
+            y: visibleFrame.maxY - 140 // "Top center" (higher than center)
+        )
 
         // Set initial frame — SwiftUI will resize from here via .preferredContentSize
         let initialHeight = min(max(hosting.fittingSize.height, minHeight), maxHeight)
