@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Menu bar icon
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Paragraph")
+            button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "AIHelper")
         }
 
         let menu = NSMenu()

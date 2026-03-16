@@ -11,10 +11,10 @@
 
 	<!-- Accessibility (required for CGEvent tap) -->
 	<key>NSAccessibilityUsageDescription</key>
-	<string>Paragraph needs accessibility access to detect your global shortcut key and read selected text.</string>
+	<string>AIHelper needs Accessibility access to detect your global shortcut and work with selected text.</string>
 
 	<!-- Paste-board / AppleEvents -->
 	<key>NSAppleEventsUsageDescription</key>
-	<string>Paragraph uses Apple Events to copy your selected text.</string>
+	<string>AIHelper uses Apple Events to copy selected text and paste AI results back into the active app.</string>
 </dict>
 </plist>

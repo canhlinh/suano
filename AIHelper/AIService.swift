@@ -31,15 +31,9 @@ enum AIProvider: String, CaseIterable, Codable, Sendable {
 
 extension UserDefaults {
     private enum K {
-        static let apiKey   = "openAIApiKey"
         static let provider = "aiProvider"
         static let baseURL  = "aiBaseURL"
         static let model    = "aiModel"
-    }
-
-    nonisolated var openAIApiKey: String {
-        get { string(forKey: K.apiKey) ?? "" }
-        set { set(newValue, forKey: K.apiKey) }
     }
 
     nonisolated var aiProvider: AIProvider {
@@ -131,7 +125,7 @@ actor AIService {
         let provider = UserDefaults.standard.aiProvider
         let baseURL  = UserDefaults.standard.aiBaseURL
         let model    = UserDefaults.standard.aiModel
-        let apiKey   = UserDefaults.standard.openAIApiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        let apiKey   = KeychainService.shared.getAPIKey().trimmingCharacters(in: .whitespacesAndNewlines)
 
         if provider.requiresAPIKey && apiKey.isEmpty {
             onComplete(AIError.missingAPIKey)

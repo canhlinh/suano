@@ -16,7 +16,7 @@ struct ShortcutSettingsView: View {
     @State private var provider: AIProvider    = UserDefaults.standard.aiProvider
     @State private var baseURL: String         = UserDefaults.standard.aiBaseURL
     @State private var model: String           = UserDefaults.standard.aiModel
-    @State private var apiKey: String          = UserDefaults.standard.openAIApiKey
+    @State private var apiKey: String          = KeychainService.shared.getAPIKey()
     @State private var showAPIKey              = false
     @State private var aiSaved                 = false
 
@@ -91,7 +91,7 @@ struct ShortcutSettingsView: View {
                 }
 
                 HStack {
-                    Text(provider == .ollama ? "Make sure Ollama is running locally." : "Your key is stored locally and never sent anywhere else.")
+                    Text(provider == .ollama ? "Make sure Ollama is running locally." : "Your API key is stored securely in Keychain on this Mac.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()
@@ -105,7 +105,7 @@ struct ShortcutSettingsView: View {
                         UserDefaults.standard.aiProvider  = provider
                         UserDefaults.standard.aiBaseURL   = baseURL
                         UserDefaults.standard.aiModel     = model
-                        UserDefaults.standard.openAIApiKey = apiKey
+                        KeychainService.shared.setAPIKey(apiKey)
                         withAnimation { aiSaved = true }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             withAnimation { aiSaved = false }
