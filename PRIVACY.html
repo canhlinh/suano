@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - AIHelper</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        h1 { font-size: 2.5rem; margin-top: 0; color: var(--accent); }
+        h2 { font-size: 1.5rem; margin-top: 2rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+        p, li { color: var(--text-muted); }
+        strong { color: var(--text); }
+        .footer { margin-top: 3rem; font-size: 0.875rem; color: #64748b; border-top: 1px solid #334155; padding-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <p>Last Updated: March 17, 2026</p>
+
+        <p>AIHelper is built with a privacy-first philosophy. Our goal is to provide a powerful AI writing assistant while ensuring that your data remains under your control.</p>
+
+        <h2>1. Data Collection</h2>
+        <p><strong>Local Data:</strong> AIHelper does not store your selected text or AI-generated results on its own servers. It does not collect any personal identifiers, logs, or usage statistics.</p>
+        <p><strong>API Keys:</strong> Your API keys are stored securely on your local device using the macOS Keychain. They are never transmitted to us or any third party, except for the AI provider you have configured.</p>
+
+        <h2>2. Data Transmission</h2>
+        <p>AIHelper acts as a bridge between your local environment and your chosen AI service (such as OpenAI or a local Ollama instance). Data transmission only occurs when you explicitly trigger the application's functionality via your global shortcut.</p>
+        <ul>
+            <li><strong>User-Triggered:</strong> Only the text you specifically select and the queries you enter are sent to the AI provider.</li>
+            <li><strong>Endpoint Control:</strong> You have full control over the API endpoint and model used by the application in the Settings panel.</li>
+        </ul>
+
+        <h2>3. Third-Party Services</h2>
+        <p>If you use a remote AI provider (like OpenAI), your data is subject to their respective privacy policies. We encourage you to review the privacy policy of any AI provider you configure within AIHelper.</p>
+
+        <h2>4. Changes to This Policy</h2>
+        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+
+        <div class="footer">
+            <p>If you have any questions about this Privacy Policy, please contact us.</p>
+            <p>&copy; 2026 AIHelper. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

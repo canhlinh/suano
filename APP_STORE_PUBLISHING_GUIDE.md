@@ -114,7 +114,17 @@ Complete the following for the app version:
 
 1. App description, subtitle, keywords, support URL, marketing URL (optional).
 2. Privacy policy URL (required for apps handling user text and network requests).
-3. Screenshots for required Mac display sizes.
+3. Screenshots for required Mac display sizes:
+   - **Primary Size:** 1280 x 800 (standard) or 1440 x 900.
+   - **Retina Size:** 2560 x 1600 or 2880 x 1800.
+   - *Tip:* Use `Cmd + Shift + 4` then `Space` to take a clean screenshot of just the window.
+
+> [!TIP]
+> **What to show in screenshots:**
+> 1. **The Hero Shot:** The main popup over some text in a document (e.g., Mail or Notes).
+> 2. **The "Fixing" State:** The popup with loading dots or a fresh AI response.
+> 3. **The Settings:** Show the Shortcut Settings view to prove customization.
+> 4. **Modern UI:** Showcase the dark mode and premium design we built.
 4. Age rating questionnaire.
 5. Export compliance (encryption questions).
 6. App Privacy section:
@@ -149,11 +159,11 @@ To pass review:
 
 ## 9. Fast Pre-Submission Checklist
 
-- [ ] Sandbox enabled and valid entitlements
-- [ ] Consistent app naming in all permission prompts
-- [ ] API key stored in Keychain (not UserDefaults)
-- [ ] Realistic deployment target
-- [ ] Version/build numbers updated
-- [ ] Privacy policy and App Privacy questionnaire completed
-- [ ] Archive validation passes with no critical warnings
-- [ ] App Review notes explain Accessibility + Apple Events usage
+- [x] Sandbox enabled and valid entitlements
+- [x] Consistent app naming in all permission prompts
+- [x] API key stored in Keychain (not UserDefaults)
+- [x] Realistic deployment target (v13.0)
+- [x] Version/build numbers updated (v1.0.0)
+- [/] Privacy policy ready (needs hosting and URL in App Store Connect)
+- [x] Archive validation passes with no critical warnings
+- [x] App Review notes template ready in this guide
