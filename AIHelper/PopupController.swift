@@ -112,10 +112,12 @@ class PopupController: NSObject, NSWindowDelegate {
         panel = newPanel
         hostingView = hosting
 
-        escMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            if event.keyCode == 53 {
-                DispatchQueue.main.async { self?.dismissPopup() }
+        escMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            if event.keyCode == 53 { // ESC
+                self?.dismissPopup()
+                return nil // handled
             }
+            return event
         }
     }
 

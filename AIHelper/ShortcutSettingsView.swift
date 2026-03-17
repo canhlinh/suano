@@ -38,7 +38,7 @@ struct ShortcutSettingsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: provider) { _, newProvider in
+                .onChange(of: provider) { newProvider in
                     // Reset URL and model to defaults for the chosen provider
                     baseURL = newProvider.defaultBaseURL
                     model   = newProvider.defaultModel

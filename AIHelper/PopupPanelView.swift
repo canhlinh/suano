@@ -73,10 +73,6 @@ struct PopupPanelView: View {
                 .onSubmit {
                     submitFollowUp()
                 }
-                .onKeyPress(.return) {
-                    submitFollowUp()
-                    return .handled
-                }
                 .foregroundColor(.white)
                 .accentColor(.white)
         }
