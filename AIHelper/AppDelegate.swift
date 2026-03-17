@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openShortcutSettings), keyEquivalent: ","))
+        menu.addItem(NSMenuItem(title: "Settings", action: #selector(openShortcutSettings), keyEquivalent: ","))
         menu.addItem(.separator())
         menu.addItem(NSMenuItem(title: "Quit AIHelper", action: #selector(quitApp), keyEquivalent: "q"))
         statusItem?.menu = menu
@@ -50,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Build the window first so we can reference it inside the view's callbacks
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 420, height: 100),
+            contentRect: NSRect(x: 0, y: 0, width: 420, height: 200),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false

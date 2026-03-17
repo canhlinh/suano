@@ -98,7 +98,7 @@ struct PopupPanelView: View {
             }
             .padding(16)
         }
-        .frame(minHeight: 100, maxHeight: 500)
+        .frame(minHeight: 200, maxHeight: 500)
     }
 
     private var actionBox: some View {
