@@ -16,5 +16,9 @@
 	<!-- Paste-board / AppleEvents -->
 	<key>NSAppleEventsUsageDescription</key>
 	<string>AIHelper uses Apple Events to copy selected text and paste AI results back into the active app.</string>
+
+	<!-- Local Network (required for local AI services like Ollama) -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>AIHelper connects to local AI services like Ollama.</string>
 </dict>
 </plist>

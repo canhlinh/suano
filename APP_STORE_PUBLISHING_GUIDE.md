@@ -28,6 +28,9 @@ Before submitting, verify these items. Status reflects the current codebase:
 - Status: fixed.
 - `AIHelper.xcodeproj/project.pbxproj` now uses `MACOSX_DEPLOYMENT_TARGET = 13.0`.
 
+> [!TIP]
+> **Build Warning:** You might see a warning about `NSLocalNetworkUsageDescription`. If your app supports Ollama (local AI), you should add this key to `Info.plist` with a description like: "AIHelper connects to local AI services like Ollama."
+
 ## 2. Apple Account and App Store Connect Setup
 
 1. Enroll in Apple Developer Program (organization or individual).
@@ -38,6 +41,18 @@ Before submitting, verify these items. Status reflects the current codebase:
 - Bundle ID: must match Xcode `PRODUCT_BUNDLE_IDENTIFIER`
 - SKU: internal unique value
 3. Complete Agreements, Tax, and Banking in App Store Connect.
+
+## 2.5 Pricing and Availability ($5.00)
+
+To set your price to $5.00:
+
+1. In App Store Connect, go to **Pricing and Availability**.
+2. Click **Add Pricing**.
+3. Select the **$4.99** price tier (Apple uses tiers, so $4.99 is the standard "five dollar" price point).
+4. Select all territories (or specific ones) and click **Save**.
+
+> [!NOTE]
+> Apple takes a 15% to 30% commission depending on your enrollment in the Small Business Program.
 
 ## 3. Xcode Project Configuration Checklist
 
@@ -114,6 +129,16 @@ In "Notes for App Review", explain:
 2. Why Apple Events/clipboard-style automation is required (copy/paste integration).
 3. That user-triggered text is sent to configured AI provider endpoints.
 4. How users configure provider/API key in Settings.
+
+## 7.5 App Review Strategy: The "Sandbox" Challenge
+
+> [!IMPORTANT]
+> Because your app is Sandboxed (required for App Store), Apple is very strict about apps that request **Accessibility Permissions** to read/control other apps. 
+
+To pass review:
+1. **Explain the Workflow:** Be very clear that AIHelper only captures text *when the user presses the shortcut*. It does not "spy" passively.
+2. **Provide a Demo Video:** Upload a video to App Store Connect showing you using the shortcut to fix text. This helps the reviewer understand the utility.
+3. **App Store Guidelines:** Be prepared to argue that your app falls under "Productivity" and the Accessibility permission is the *only* way to provide the "Paste-back" feature seamlessly.
 
 ## 8. Release and Post-Release
 
