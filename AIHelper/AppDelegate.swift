@@ -50,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Build the window first so we can reference it inside the view's callbacks
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 420, height: 200),
+            contentRect: NSRect(x: 0, y: 0, width: 420, height: 300),
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false

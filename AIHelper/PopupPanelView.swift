@@ -42,7 +42,9 @@ struct PopupPanelView: View {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                 isVisible = true
             }
-            isQueryFocused = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isQueryFocused = true
+            }
             // Initially run the default action
             vm.run(action: .fixSpelling, text: selectedText)
         }
@@ -98,7 +100,7 @@ struct PopupPanelView: View {
             }
             .padding(16)
         }
-        .frame(minHeight: 200, maxHeight: 500)
+        .frame(minHeight: 300, maxHeight: 500)
     }
 
     private var actionBox: some View {
