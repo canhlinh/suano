@@ -1,6 +1,6 @@
 //
 //  PopupController.swift
-//  AIHelper — macOS AI writing assistant
+//  Suano — macOS AI writing assistant
 //
 
 import Cocoa

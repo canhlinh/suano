@@ -1,6 +1,6 @@
 //
 //  KeychainService.swift
-//  AIHelper
+//  Suano
 //
 
 import Foundation
@@ -14,7 +14,7 @@ final class KeychainService: @unchecked Sendable {
     private let legacyDefaultsKey = "openAIApiKey"
 
     private init() {
-        service = Bundle.main.bundleIdentifier ?? "dev.lingcloud.aihelper"
+        service = Bundle.main.bundleIdentifier ?? "dev.lingcloud.suano"
     }
 
     nonisolated func getAPIKey() -> String {

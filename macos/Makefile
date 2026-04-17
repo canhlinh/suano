@@ -1,5 +1,5 @@
-APP_NAME   = AIHelper
-SCHEME     = AIHelper
+APP_NAME   = Suano
+SCHEME     = Suano
 BUILD_DIR  = build
 RELEASE    = $(BUILD_DIR)/Build/Products/Release/$(APP_NAME).app
 INSTALL    = /Applications/$(APP_NAME).app

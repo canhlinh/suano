@@ -50,7 +50,7 @@ fn markdown_to_pango(md: &str) -> String {
 pub fn show_popup(app: &Application, selected_text: String, settings: Arc<Mutex<Settings>>) {
     let win = ApplicationWindow::builder()
         .application(app)
-        .title("AIHelper")
+        .title("Suano")
         .default_width(700)
         .default_height(500)
         .decorated(false)

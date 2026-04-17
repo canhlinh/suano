@@ -9,7 +9,7 @@ fn config_path() -> PathBuf {
             let home = std::env::var("HOME").unwrap_or_default();
             PathBuf::from(home).join(".config")
         });
-    base.join("aihelper").join("settings.json")
+    base.join("suano").join("settings.json")
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -102,7 +102,7 @@ fn get_schema() -> libsecret::Schema {
     let mut attrs = std::collections::HashMap::new();
     attrs.insert("account", libsecret::SchemaAttributeType::String);
     libsecret::Schema::new(
-        "dev.lingcloud.aihelper",
+        "dev.lingcloud.suano",
         libsecret::SchemaFlags::NONE,
         attrs,
     )
@@ -111,7 +111,7 @@ fn get_schema() -> libsecret::Schema {
 fn get_api_key_secret() -> String {
     let schema = get_schema();
     let mut attrs = std::collections::HashMap::new();
-    attrs.insert("account", "aihelper_api_key");
+    attrs.insert("account", "suano_api_key");
     match libsecret::password_lookup_sync(Some(&schema), attrs, None::<&gio::Cancellable>) {
         Ok(Some(passwd)) => passwd.to_string(),
         _ => String::new(),
@@ -121,7 +121,7 @@ fn get_api_key_secret() -> String {
 fn set_api_key_secret(api_key: &str) {
     let schema = get_schema();
     let mut attrs = std::collections::HashMap::new();
-    attrs.insert("account", "aihelper_api_key");
+    attrs.insert("account", "suano_api_key");
     if api_key.trim().is_empty() {
         let _ = libsecret::password_clear_sync(Some(&schema), attrs, None::<&gio::Cancellable>);
     } else {
@@ -129,7 +129,7 @@ fn set_api_key_secret(api_key: &str) {
             Some(&schema),
             attrs,
             Some(libsecret::COLLECTION_DEFAULT),
-            "AIHelper API Key",
+            "Suano API Key",
             api_key,
             None::<&gio::Cancellable>,
         );

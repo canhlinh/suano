@@ -85,7 +85,7 @@ pub async fn stream_ai(
         .post(&url)
         .header("Content-Type", "application/json")
         .header("Accept", "text/event-stream")
-        .header("User-Agent", "AIHelper/1.0");
+        .header("User-Agent", "Suano/1.0");
 
     if !api_key.is_empty() {
         req = req.header("Authorization", format!("Bearer {}", api_key));
