@@ -27,7 +27,7 @@ fn accel_to_label(accel: &str) -> String {
 pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save: impl Fn() + 'static) {
     let win = ApplicationWindow::builder()
         .application(app)
-        .title("AIHelper – Settings")
+        .title("Suano – Settings")
         .default_width(440)
         .resizable(false)
         .build();

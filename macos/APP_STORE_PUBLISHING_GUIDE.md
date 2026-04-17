@@ -1,6 +1,6 @@
-# AIHelper Mac App Store Publishing Guide
+# Suano Mac App Store Publishing Guide
 
-This document explains how to publish AIHelper to the Apple Mac App Store.
+This document explains how to publish Suano to the Apple Mac App Store.
 
 ## 1. Current Readiness Review (Important)
 
@@ -8,17 +8,17 @@ Before submitting, verify these items. Status reflects the current codebase:
 
 1. App Sandbox and entitlement configuration.
 - Status: fixed.
-- `AIHelper.xcodeproj/project.pbxproj` now sets `ENABLE_APP_SANDBOX = YES`.
-- `AIHelper/AIHelper.entitlements` now has `com.apple.security.app-sandbox` set to `true`.
+- `Suano.xcodeproj/project.pbxproj` now sets `ENABLE_APP_SANDBOX = YES`.
+- `Suano/Suano.entitlements` now has `com.apple.security.app-sandbox` set to `true`.
 
 2. App identity strings consistency.
 - Status: fixed.
-- `AIHelper.xcodeproj/project.pbxproj` now sets `INFOPLIST_KEY_CFBundleDisplayName = AIHelper`.
-- User-facing `Paragraph` strings were replaced with `AIHelper`.
+- `Suano.xcodeproj/project.pbxproj` now sets `INFOPLIST_KEY_CFBundleDisplayName = Suano`.
+- User-facing `Paragraph` strings were replaced with `Suano`.
 
 3. Privacy-related permission copy.
 - Status: fixed.
-- `AIHelper/Info.plist` permission descriptions now reference AIHelper and explain shortcut/copy-paste behavior.
+- `Suano/Info.plist` permission descriptions now reference Suano and explain shortcut/copy-paste behavior.
 
 4. API key storage security.
 - Status: fixed.
@@ -26,17 +26,17 @@ Before submitting, verify these items. Status reflects the current codebase:
 
 5. Deployment target sanity.
 - Status: fixed.
-- `AIHelper.xcodeproj/project.pbxproj` now uses `MACOSX_DEPLOYMENT_TARGET = 13.0`.
+- `Suano.xcodeproj/project.pbxproj` now uses `MACOSX_DEPLOYMENT_TARGET = 13.0`.
 
 > [!TIP]
-> **Build Warning:** You might see a warning about `NSLocalNetworkUsageDescription`. If your app supports Ollama (local AI), you should add this key to `Info.plist` with a description like: "AIHelper connects to local AI services like Ollama."
+> **Build Warning:** You might see a warning about `NSLocalNetworkUsageDescription`. If your app supports Ollama (local AI), you should add this key to `Info.plist` with a description like: "Suano connects to local AI services like Ollama."
 
 ## 2. Apple Account and App Store Connect Setup
 
 1. Enroll in Apple Developer Program (organization or individual).
 2. In App Store Connect, create a new macOS app record:
 - Platform: macOS
-- Name: AIHelper
+- Name: Suano
 - Primary language
 - Bundle ID: must match Xcode `PRODUCT_BUNDLE_IDENTIFIER`
 - SKU: internal unique value
@@ -56,7 +56,7 @@ To set your price to $5.00:
 
 ## 3. Xcode Project Configuration Checklist
 
-In target `AIHelper` (Release config):
+In target `Suano` (Release config):
 
 1. Signing and capabilities
 - Enable App Sandbox.
@@ -68,7 +68,7 @@ In target `AIHelper` (Release config):
 - Increment `CURRENT_PROJECT_VERSION` for each upload.
 
 3. Info metadata
-- `CFBundleDisplayName`: set to `AIHelper` (or your final brand, consistently).
+- `CFBundleDisplayName`: set to `Suano` (or your final brand, consistently).
 - Confirm `LSApplicationCategoryType` is correct (`public.app-category.productivity` is fine).
 - Replace permission description text with accurate wording using your app name.
 
@@ -84,9 +84,9 @@ In target `AIHelper` (Release config):
 - Keep `com.apple.security.network.client = true` for outbound API calls.
 
 2. Permission text cleanup
-- Replace `Paragraph` references with `AIHelper` in:
-  - `AIHelper/Info.plist`
-  - `AIHelper/AppDelegate.swift` accessibilityDescription
+- Replace `Paragraph` references with `Suano` in:
+  - `Suano/Info.plist`
+  - `Suano/AppDelegate.swift` accessibilityDescription
 
 3. Secure API key storage
 - Move API key persistence from `UserDefaults` to Keychain Services.
@@ -101,7 +101,7 @@ In target `AIHelper` (Release config):
 
 ## 5. Build, Archive, and Upload
 
-1. In Xcode, select the `AIHelper` scheme and `Any Mac (Apple Silicon, Intel)`.
+1. In Xcode, select the `Suano` scheme and `Any Mac (Apple Silicon, Intel)`.
 2. Product -> Archive (Release).
 3. In Organizer:
 - Validate App
@@ -146,7 +146,7 @@ In "Notes for App Review", explain:
 > Because your app is Sandboxed (required for App Store), Apple is very strict about apps that request **Accessibility Permissions** to read/control other apps. 
 
 To pass review:
-1. **Explain the Workflow:** Be very clear that AIHelper only captures text *when the user presses the shortcut*. It does not "spy" passively.
+1. **Explain the Workflow:** Be very clear that Suano only captures text *when the user presses the shortcut*. It does not "spy" passively.
 2. **Provide a Demo Video:** Upload a video to App Store Connect showing you using the shortcut to fix text. This helps the reviewer understand the utility.
 3. **App Store Guidelines:** Be prepared to argue that your app falls under "Productivity" and the Accessibility permission is the *only* way to provide the "Paste-back" feature seamlessly.
 
@@ -159,16 +159,16 @@ To pass review:
 
 ## Appendix A: Privacy Policy Template
 
-Because AIHelper processes user text, Apple requires a valid Privacy Policy URL. You can host this simple privacy policy on a free site (like GitHub Pages or Notion) and paste the link into App Store Connect:
+Because Suano processes user text, Apple requires a valid Privacy Policy URL. You can host this simple privacy policy on a free site (like GitHub Pages or Notion) and paste the link into App Store Connect:
 
-> **AIHelper Privacy Policy**
+> **Suano Privacy Policy**
 > 
 > **Data Collection and Use**
-> AIHelper is a utility designed to assist with writing by sending user-selected text to a designated AI text-generation endpoint (e.g., OpenAI or a local Ollama instance).
+> Suano is a utility designed to assist with writing by sending user-selected text to a designated AI text-generation endpoint (e.g., OpenAI or a local Ollama instance).
 > 
-> 1. **Text Processing:** Text is only captured when you explicitly trigger the AIHelper shortcut while text is selected. The selected text is sent directly to your configured AI provider. AIHelper does not intercept or log keystrokes continually.
+> 1. **Text Processing:** Text is only captured when you explicitly trigger the Suano shortcut while text is selected. The selected text is sent directly to your configured AI provider. Suano does not intercept or log keystrokes continually.
 > 2. **API Keys:** If you configure an API key (like OpenAI), it is stored securely on your device using macOS Keychain Services. It is solely used to authenticate your requests with the chosen provider and is never sent to our servers.
-> 3. **Data Retention:** AIHelper does not store, transmit, or retain any of your text, prompts, or generated responses on our servers, nor does it collect analytics or diagnostic data. All data transmission occurs exclusively between your device and your chosen AI endpoint.
+> 3. **Data Retention:** Suano does not store, transmit, or retain any of your text, prompts, or generated responses on our servers, nor does it collect analytics or diagnostic data. All data transmission occurs exclusively between your device and your chosen AI endpoint.
 
 ## 9. Fast Pre-Submission Checklist
 

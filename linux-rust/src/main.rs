@@ -23,7 +23,7 @@ pub fn hotkey_paused() -> &'static Arc<std::sync::atomic::AtomicBool> {
 
 fn main() {
     let app = Application::builder()
-        .application_id("dev.lingcloud.aihelper")
+        .application_id("dev.lingcloud.suano")
         .build();
 
     let initialized = Arc::new(std::sync::atomic::AtomicBool::new(false));
@@ -69,7 +69,7 @@ pub fn register_gnome_shortcut(hotkey: &str) {
 
     let hotkey = if hotkey.is_empty() { "<Ctrl><Shift>g" } else { hotkey };
 
-    let binding_path = "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/aihelper/";
+    let binding_path = "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/suano/";
     let list_key = "org.gnome.settings-daemon.plugins.media-keys";
 
     // Get current custom keybindings list
@@ -92,9 +92,9 @@ pub fn register_gnome_shortcut(hotkey: &str) {
     let _ = Command::new("gsettings").args(["set", list_key, "custom-keybindings", &new_list]).status();
 
     let schema = "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding";
-    let _ = Command::new("gsettings").args(["set", &format!("{}:{}", schema, binding_path), "name", "AIHelper Trigger"]).status();
+    let _ = Command::new("gsettings").args(["set", &format!("{}:{}", schema, binding_path), "name", "Suano Trigger"]).status();
     let _ = Command::new("gsettings").args(["set", &format!("{}:{}", schema, binding_path), "command",
-        "busctl --user call dev.lingcloud.aihelper.hotkey /trigger dev.lingcloud.Trigger Fire"
+        "busctl --user call dev.lingcloud.suano.hotkey /trigger dev.lingcloud.Trigger Fire"
     ]).status();
     let _ = Command::new("gsettings").args(["set", &format!("{}:{}", schema, binding_path), "binding", hotkey]).status();
 }
@@ -117,7 +117,7 @@ async fn listen_dbus_trigger(tx: tokio::sync::mpsc::UnboundedSender<()>, paused:
     }
 
     let _conn = connection::Builder::session()?
-        .name("dev.lingcloud.aihelper.hotkey")?
+        .name("dev.lingcloud.suano.hotkey")?
         .serve_at("/trigger", TriggerIface { tx, paused })?
         .build()
         .await?;

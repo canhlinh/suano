@@ -11,14 +11,14 @@
 
 	<!-- Accessibility (required for CGEvent tap) -->
 	<key>NSAccessibilityUsageDescription</key>
-	<string>AIHelper needs Accessibility access to detect your global shortcut and work with selected text.</string>
+	<string>Suano needs Accessibility access to detect your global shortcut and work with selected text.</string>
 
 	<!-- Paste-board / AppleEvents -->
 	<key>NSAppleEventsUsageDescription</key>
-	<string>AIHelper uses Apple Events to copy selected text and paste AI results back into the active app.</string>
+	<string>Suano uses Apple Events to copy selected text and paste AI results back into the active app.</string>
 
 	<!-- Local Network (required for local AI services like Ollama) -->
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>AIHelper connects to local AI services like Ollama.</string>
+	<string>Suano connects to local AI services like Ollama.</string>
 </dict>
 </plist>

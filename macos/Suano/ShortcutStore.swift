@@ -1,6 +1,6 @@
 //
 //  ShortcutStore.swift
-//  AIHelper — macOS AI writing assistant
+//  Suano — macOS AI writing assistant
 //
 //  Persists the user's chosen global shortcut in UserDefaults.
 //

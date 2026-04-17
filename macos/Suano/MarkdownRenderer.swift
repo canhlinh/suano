@@ -1,6 +1,6 @@
 //
 //  MarkdownRenderer.swift
-//  AIHelper
+//  Suano
 //
 
 import SwiftUI
