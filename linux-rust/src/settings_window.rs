@@ -2,7 +2,7 @@ use gtk4::prelude::*;
 use gtk4::{
     Application, ApplicationWindow, Box as GBox, Button, CheckButton,
     DropDown, Entry, Label, Orientation, PasswordEntry, Separator, Spinner,
-    StringList, glib,
+    StringList, StringObject, glib,
 };
 use std::sync::{Arc, Mutex};
 use tokio::sync::oneshot;
@@ -22,6 +22,21 @@ fn accel_to_label(accel: &str) -> String {
     } else {
         s.to_uppercase()
     }
+}
+
+fn get_dropdown_string(dropdown: &gtk4::DropDown) -> String {
+    let selected = dropdown.selected();
+    if selected == gtk4::INVALID_LIST_POSITION {
+        return String::new();
+    }
+    if let Some(model) = dropdown.model() {
+        if let Some(item) = model.item(selected) {
+            if let Ok(strobj) = item.downcast::<StringObject>() {
+                return strobj.string().to_string();
+            }
+        }
+    }
+    String::new()
 }
 
 pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save: impl Fn() + 'static) {
@@ -48,18 +63,17 @@ pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save:
     let base_url_entry = Entry::new();
     base_url_entry.set_placeholder_text(Some("Base URL"));
 
-    let model_entry = Entry::new();
-    model_entry.set_placeholder_text(Some("Model"));
+    let model_dropdown = DropDown::new(Some(StringList::new(&[])), gtk4::Expression::NONE);
 
     let fetch_btn = Button::with_label("⟳ Fetch Models");
     let fetch_spinner = Spinner::new();
     fetch_spinner.set_visible(false);
 
     let model_row = GBox::new(Orientation::Horizontal, 6);
-    model_row.append(&model_entry);
+    model_row.append(&model_dropdown);
     model_row.append(&fetch_btn);
     model_row.append(&fetch_spinner);
-    model_entry.set_hexpand(true);
+    model_dropdown.set_hexpand(true);
 
     let api_key_entry = PasswordEntry::new();
     api_key_entry.set_placeholder_text(Some("API Key (sk-...)"));
@@ -83,7 +97,11 @@ pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save:
             provider_combo.set_selected(0);
         }
         base_url_entry.set_text(&cfg.base_url);
-        model_entry.set_text(&cfg.model);
+        
+        // initialize dropdown with saved model
+        let init_list = StringList::new(&[&cfg.model]);
+        model_dropdown.set_model(Some(&init_list));
+        model_dropdown.set_selected(0);
         api_key_entry.set_text(&cfg.api_key);
         thinking_check.set_active(cfg.enable_thinking);
     }
@@ -103,25 +121,28 @@ pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save:
 
     provider_combo.connect_selected_notify({
         let base_url_entry = base_url_entry.clone();
-        let model_entry = model_entry.clone();
+        let model_dropdown = model_dropdown.clone();
         let uv = update_visibility.clone();
         move |combo| {
             let is_ollama = combo.selected() == 1;
             if is_ollama {
                 base_url_entry.set_text(Settings::ollama_default_base_url());
-                model_entry.set_text(Settings::ollama_default_model());
+                let list = StringList::new(&[Settings::ollama_default_model()]);
+                model_dropdown.set_model(Some(&list));
+                model_dropdown.set_selected(0);
             } else {
                 base_url_entry.set_text(Settings::openai_default_base_url());
-                model_entry.set_text("meta-llama/llama-4-scout-17b-16e-instruct");
+                let list = StringList::new(&["meta-llama/llama-4-scout-17b-16e-instruct"]);
+                model_dropdown.set_model(Some(&list));
+                model_dropdown.set_selected(0);
             }
             uv();
         }
     });
 
-    // Fetch models button
     fetch_btn.connect_clicked({
         let base_url_entry = base_url_entry.clone();
-        let model_entry = model_entry.clone();
+        let model_dropdown = model_dropdown.clone();
         let api_key_entry = api_key_entry.clone();
         let fetch_spinner = fetch_spinner.clone();
         let fetch_btn = fetch_btn.clone();
@@ -139,49 +160,21 @@ pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save:
                 let _ = tx.send(result);
             });
 
-            let model_entry = model_entry.clone();
+            let model_dropdown = model_dropdown.clone();
             let fetch_spinner = fetch_spinner.clone();
             let fetch_btn = fetch_btn.clone();
             gtk4::glib::spawn_future_local(async move {
                 if let Ok(result) = rx.await {
                     match result {
                         Ok(models) => {
-                            let popover = gtk4::Popover::new();
-                            popover.set_parent(&fetch_btn);
-
-                            let scrolled_window = gtk4::ScrolledWindow::new();
-                            scrolled_window.set_max_content_height(300);
-                            scrolled_window.set_policy(gtk4::PolicyType::Never, gtk4::PolicyType::Automatic);
-
-                            let list_box = gtk4::ListBox::new();
-                            list_box.set_selection_mode(gtk4::SelectionMode::None);
-
-                            for model in &models {
-                                let lbl = gtk4::Label::new(Some(model));
-                                lbl.set_halign(gtk4::Align::Start);
-                                lbl.set_margin_start(12);
-                                lbl.set_margin_end(12);
-                                lbl.set_margin_top(8);
-                                lbl.set_margin_bottom(8);
-                                list_box.append(&lbl);
+                            let sl = StringList::new(&[]);
+                            for m in &models {
+                                sl.append(m);
                             }
-
-                            scrolled_window.set_child(Some(&list_box));
-                            popover.set_child(Some(&scrolled_window));
-
-                            let models_clone = models.clone();
-                            let model_entry_clone = model_entry.clone();
-                            let popover_clone = popover.clone();
-                            
-                            list_box.connect_row_activated(move |_, row| {
-                                let idx = row.index() as usize;
-                                if let Some(model_name) = models_clone.get(idx) {
-                                    model_entry_clone.set_text(model_name);
-                                    popover_clone.popdown();
-                                }
-                            });
-
-                            popover.popup();
+                            model_dropdown.set_model(Some(&sl));
+                            if !models.is_empty() {
+                                model_dropdown.set_selected(0);
+                            }
                         }
                         Err(e) => eprintln!("Fetch models error: {e}"),
                     }
@@ -333,7 +326,7 @@ pub fn show_settings(app: &Application, settings: Arc<Mutex<Settings>>, on_save:
                 "OpenAI".into()
             };
             cfg.base_url = base_url_entry.text().to_string();
-            cfg.model = model_entry.text().to_string();
+            cfg.model = get_dropdown_string(&model_dropdown);
             cfg.api_key = api_key_entry.text().to_string();
             cfg.enable_thinking = thinking_check.is_active();
             cfg.translate_vi = vi_check.is_active();
