@@ -32,4 +32,6 @@ Because there are distinct native implementations for macOS and Linux, please se
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is available for personal and other non-commercial use only.
+Commercial use requires a separate paid license from the copyright holder.
+See the [LICENSE](LICENSE) file for details.
