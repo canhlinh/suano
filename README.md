@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="Screenshots/app_icon.png" width="128" height="128" alt="AIHelper Icon">
+  <img src="macos/Screenshots/app_icon.png" width="128" height="128" alt="AIHelper Icon">
 </p>
 
 # AIHelper
 
 **AIHelper** is a sleek, lightweight macOS menu bar utility that brings powerful AI writing assistance to any application. Just select text, press a hotkey (⌘⇧G), and let AI fix your grammar, rephrase, or answer follow-up questions.
 
-![AIHelper Screenshot](Screenshots/main_popup.png)
+![AIHelper Screenshot](macos/Screenshots/main_popup.png)
 
 ## Features
 
