@@ -17,15 +17,15 @@ struct AppTray {
 
 impl ksni::Tray for AppTray {
     fn icon_name(&self) -> String {
-        "aihelper".into()
+        "suano".into()
     }
     
     fn id(&self) -> String {
-        "dev.lingcloud.aihelper".into()
+        "dev.lingcloud.suano".into()
     }
 
     fn title(&self) -> String {
-        "AIHelper".into()
+        "Suano".into()
     }
 
     fn menu(&self) -> Vec<ksni::MenuItem<Self>> {

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  AIHelper — macOS AI writing assistant
+//  Suano — macOS AI writing assistant
 //
 
 import AppKit
@@ -19,13 +19,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Menu bar icon
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "AIHelper")
+            button.image = NSImage(systemSymbolName: "text.bubble", accessibilityDescription: "Suano")
         }
 
         let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "Settings", action: #selector(openShortcutSettings), keyEquivalent: ","))
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit AIHelper", action: #selector(quitApp), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit Suano", action: #selector(quitApp), keyEquivalent: "q"))
         statusItem?.menu = menu
 
         // Popup controller
@@ -55,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "AIHelper – Settings"
+        window.title = "Suano – Settings"
         window.isReleasedWhenClosed = false
 
         let view = ShortcutSettingsView(

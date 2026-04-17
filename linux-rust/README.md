@@ -1,6 +1,6 @@
-# AIHelper — Linux (Rust + GTK4)
+# Suano — Linux (Rust + GTK4)
 
-A Fedora Linux/Wayland port of the macOS AIHelper app. Select text in any app, press **Ctrl+Shift+G**, and get instant AI writing assistance.
+A Fedora Linux/Wayland port of the macOS Suano app. Select text in any app, press **Ctrl+Shift+G**, and get instant AI writing assistance.
 
 ## Features
 
@@ -10,7 +10,7 @@ A Fedora Linux/Wayland port of the macOS AIHelper app. Select text in any app, p
 - `<think>` / reasoning token display (collapsible)
 - Translation buttons (Vietnamese / Korean) after grammar fix
 - Read/Paste-back background results to source app via `wl-clipboard` and `ydotool`
-- Settings persisted to `~/.config/aihelper/settings.json`
+- Settings persisted to `~/.config/suano/settings.json`
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ Or manually:
 
 ```bash
 cargo build --release
-./target/release/aihelper
+./target/release/suano
 ```
 
 ## Configuration

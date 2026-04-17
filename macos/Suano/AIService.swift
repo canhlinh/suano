@@ -1,6 +1,6 @@
 //
 //  AIService.swift
-//  AIHelper — macOS AI writing assistant
+//  Suano — macOS AI writing assistant
 //
 
 
@@ -172,7 +172,7 @@ actor AIService {
         if !apiKey.isEmpty {
             request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         }
-        request.setValue("AIHelper/1.0", forHTTPHeaderField: "User-Agent")
+        request.setValue("Suano/1.0", forHTTPHeaderField: "User-Agent")
 
         var body: [String: Any] = [
             "model": model,
